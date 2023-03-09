@@ -1,0 +1,477 @@
+---
+title: "Google Data Analytics, Capstone project - case 1"
+author: "Ifechi Mafiana"
+date: "2022-12-27"
+output: html_document
+---
+
+
+## Cyclistic Bike analysis
+**The plots of the Cyclistic bike rides data analysis shows the comparison between annual members and casual riders bike usage**
+
+
+### Setting up my environment
+
+```{r set up environment}
+setwd("C:/Users/olatu/Documents/R Programming/Cyclistic_tripdata")
+```
+
+```{r load packages}
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+```
+
+### Collect Data and Upload data
+
+```{r load 12 months tripdata}
+dec_2021 <- read_csv("202112_divvy_tripdata.csv")
+jan_2022 <- read_csv("202201_divvy_tripdata.csv")
+feb_2022 <- read_csv("202202_divvy_tripdata.csv")
+mar_2022 <- read_csv("202203_divvy_tripdata.csv")
+apr_2022 <- read_csv("202204_divvy_tripdata.csv")
+may_2022 <- read_csv("202205_divvy_tripdata.csv")
+jun_2022 <- read_csv("202206_divvy_tripdata.csv")
+jul_2022 <- read_csv("202207_divvy_tripdata.csv")
+aug_2022 <- read_csv("202208_divvy_tripdata.csv")
+sep_2022 <- read_csv("202209_divvy_tripdata.csv")
+oct_2022 <- read_csv("202210_divvy_tripdata.csv")
+nov_2022 <- read_csv("202211_divvy_tripdata.csv")
+```
+
+### Change column names
+```{r rename column names}
+(dec_2021 <- rename(dec_2021
+                   ,"trip_id" = ride_id
+                   ,"bikeid" = rideable_type
+                   ,"start_time" = started_at  
+                   ,"end_time" = ended_at  
+                   ,"from_station_name" = start_station_name 
+                   ,"from_station_id" = start_station_id 
+                   ,"to_station_name" = end_station_name 
+                   ,"to_station_id" = end_station_id 
+                   ,"usertype" = member_casual))
+(jan_2022 <- rename(jan_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(feb_2022 <- rename(feb_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(mar_2022 <- rename(mar_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(apr_2022 <- rename(apr_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(may_2022 <- rename(may_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(jun_2022 <- rename(jun_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(jul_2022 <- rename(jul_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(aug_2022 <- rename(aug_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(sep_2022 <- rename(sep_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(oct_2022 <- rename(oct_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+(nov_2022 <- rename(nov_2022
+                    ,"trip_id" = ride_id
+                    ,"bikeid" = rideable_type
+                    ,"start_time" = started_at  
+                    ,"end_time" = ended_at  
+                    ,"from_station_name" = start_station_name 
+                    ,"from_station_id" = start_station_id 
+                    ,"to_station_name" = end_station_name 
+                    ,"to_station_id" = end_station_id 
+                    ,"usertype" = member_casual))
+```
+
+### Inspect the dataframes 
+
+```{r inspect dataframes}
+str(dec_2021)
+str(jan_2022)
+str(feb_2022)
+str(mar_2022)
+str(apr_2022)
+str(may_2022)
+str(jun_2022)
+str(jul_2022)
+str(aug_2022)
+str(sep_2022)
+str(oct_2022)
+str(nov_2022)
+```
+
+### Convert ride_id and rideable_type to character so that they can stack correctly
+
+```{r convert to character type}
+dec_2021 <-  mutate(dec_2021, trip_id = as.character(trip_id), bikeid = as.character(bikeid)) 
+jan_2022 <-  mutate(jan_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+feb_2022 <-  mutate(feb_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+mar_2022 <-  mutate(mar_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+apr_2022 <-  mutate(apr_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+may_2022 <-  mutate(may_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+jun_2022 <-  mutate(jun_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+jul_2022 <-  mutate(jul_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+jul_2022 <-  mutate(jul_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+aug_2022 <-  mutate(aug_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+sep_2022 <-  mutate(sep_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+oct_2022 <-  mutate(oct_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+nov_2022 <-  mutate(nov_2022, trip_id = as.character(trip_id), bikeid = as.character(bikeid))
+```
+
+### Stack individual quarter's data frames into one big data frame
+
+```{r merge dataframes}
+all_trips <- bind_rows(dec_2021, jan_2022, feb_2022, mar_2022, apr_2022, may_2022, jun_2022, jul_2022, aug_2022, sep_2022, oct_2022, nov_2022)
+```
+
+### Reassign to the desired values (we will go with the current 2020 labels)
+
+```{r changeto current label}
+all_trips <-  all_trips %>% 
+  mutate(usertype = recode(usertype
+                                ,"Subscriber" = "member"
+                                ,"Customer" = "casual"))
+```
+
+### Check to make sure the proper number of observations were reassigned
+
+```{r check out table}
+table(all_trips$usertype)
+```
+
+### Create new columns such as month, date, and day of the week for analysis
+Add columns that list the date, month, day, and year of each ride
+This will allow us to aggregate ride data for each month, day, or year ... 
+before completing these operations we could only aggregate at the ride level
+
+```{r create new columns}
+all_trips$date <- as.Date(all_trips$start_time) #The default format is yyyy-mm-dd
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+all_trips$ride_length <- all_trips$end_time - all_trips$start_time
+```
+
+### Convert "ride_length" from factor to numeric so we can run calculations on the data
+
+```{r convert to numeric}
+all_trips$ride_length <- as.numeric(all_trips$ride_length)
+```
+
+### Remove "bad" data
+The dataframe includes a few hundred entries when bikes were taken out of docks and checked for quality by Cyclistic or ride_length was negative We will create a new version of the dataframe (v2) since data is being removed
+
+```{r remove bad data}
+all_trips_v2 <- all_trips[!all_trips$ride_length < 0,]
+```
+
+### Remove NA values
+```{r remove NA }
+all_trips_v2 <- all_trips_v2 %>% drop_na()
+```
+
+## Conduct descriptive analysis
+
+### Descriptive analysis on ride_length (all figures in seconds)
+
+```{r quick summary ride length}
+summary(all_trips_v2$ride_length)
+```
+
+### Compare members and casual users
+
+```{r compare casual and members ride length}
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype, FUN = mean)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype, FUN = median)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype, FUN = max)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype, FUN = min)
+```
+
+### The average ride time by each day for members vs casual users
+
+```{r average ride time of users}
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype + all_trips_v2$day_of_week, FUN = mean)
+```
+
+### Notice that the days of the week are out of order. Let's fix that.
+
+```{r correct the days of the week}
+all_trips_v2$day_of_week <- ordered(all_trips_v2$day_of_week, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+```
+
+### Now, let's run the average ride time by each day for members vs casual users
+
+```{r average ride duration of users}
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype + all_trips_v2$day_of_week, FUN = mean)
+```
+
+### analyze ridership data by type and weekday
+                                                           
+```{r analyze ride data by type and weekday}
+plot1 <- all_trips_v2 %>% 
+  mutate(weekday = wday(start_time, label = TRUE)) %>%  #creates weekday field using wday()
+  group_by(usertype, weekday) %>%  #groups by usertype and weekday
+  summarise(number_of_rides = n()                                       #calculates the number of rides and average duration 
+            ,average_duration = mean(ride_length)) %>%                 # calculates the average duration
+  arrange(usertype, weekday)
+```
+
+### Let's visualize the number of rides by rider type
+
+```{r visualize number of rides vs ride type}
+ggplot(data = plot1, aes(x = weekday, y = number_of_rides, fill = usertype)) +
+  geom_col(position = "dodge") +
+  labs(y = "number of rides", x = "weekday", title= "Cyclistic Ride: Number of rides by rider type")
+```
+From the plot, it is obvious that casual users tend to ride more on weekends than in weekdays. While member users had slight decrease of number of rides during weekends but not compared to casual riders. 
+ 
+ 
+  
+### Let's create a visualization for average duration
+
+```{r visualize average duration in weekdays}
+ggplot(plot1, aes(x = weekday, y = average_duration, fill = usertype)) + 
+  geom_col(position = "dodge", width = 0.5, ) +
+  labs(y = "number of rides", x= "weekday", title = "Cyclistic ride: Average Ride time by usertype vs. Weekday")
+```
+In this plot, some very clear trends can be noticed here;
+* members took consistent rides throughout the week, for casual riders more rides were taken on  weekends, with incremental rides starting from Friday through Saturday and Sunday.
+
+* The average number of rides for members are very low compared to casual riders. The average number of rides for casual riders at weekends are far more higher. 
+
+       
+### Visualizing how user type differ depending on total rides taken
+  
+```{r visualize user type and total rides taken}
+plot2 <- all_trips_v2 %>%  
+  group_by(usertype, month) %>% 
+  summarise(number_of_rides = n(), .groups = "drop") %>% 
+  arrange(usertype, month) 
+
+ggplot(plot2, aes(x = month, y = number_of_rides, fill =usertype)) +
+  labs(title = "Cyclistic ride: Total rides by Members and Casual riders Vs. Month", x = "Month", y= "Number Of Rides") +
+  theme(axis.text.x = element_text(angle = 45)) +
+  geom_col(width= 0.5, position = position_dodge(width = 0.5))
+```
+* On the total, member riders took more rides round the year compared to casual riders. Both users rode less during beginning of the year, August had the most rides in a month.
+
+* The months June, July, August, September are the most busy time of the year for both members and casual riders. Due to winter, there is significant drop in total rides in the months of November, December, January and February for both types of riders.
+
+
+### Visualize average ride time data by type and month
+
+```{r visualize average ride time data}
+plot3 <- all_trips_v2 %>%  
+  group_by(usertype, month) %>% 
+  summarise(average_ride_length = mean(ride_length),.groups="drop")
+  
+  ggplot(plot3, aes(x = month, y = average_ride_length, fill = usertype)) +
+  geom_col(width = 0.5, position = position_dodge(width = 0.5)) + 
+  labs(title = "Cyclistic ride: Average ride length by Members and Casual riders Vs. Month") +
+  theme(axis.text.x = element_text(angle = 30))
+```
+* The average ride length for members is less 1000 throughout the year. For casual riders, the average ride length is between 1500 and 2000 throughout the year.
+
+* In the month of March, the average ride length was more higher compared to other months.
+
+### Lets create a visualization for comparison of bike type by user type
+
+```{r visualize bike type by user type}
+ggplot(all_trips_v2, aes(x = usertype, y = bikeid , fill = usertype)) + 
+  geom_col(position = "dodge") + 
+  labs(title = "Cyclistic ride: Total rides by Members and Casual riders Vs. Month", x = "Usertype", y = "Type Of bike") +
+  theme(axis.text.x = element_text(angle = 45)) +
+  geom_col(width = 0.5, position = position_dodge(width = 0.5))
+```
+
+### Visualization of rides per weekday and user type with type of bike distribution
+
+```{r visualize rides per weekday and user type with bike distribution}
+  ggplot(all_trips_v2) +
+    geom_bar(mapping = aes(x = day_of_week, fill = bikeid)) +
+    facet_wrap(~usertype) +
+    theme(axis.text.x = element_text(angle = 45)) +
+    labs(title="Cyclistic ride: Number of rides per weekday and type of bike",
+         subtitle = "Distributed by casual users & annual members",
+         x = "Weekday",
+         y = "Number of rides",
+         fill = "Type of bike")
+```
+No clear pattern can be noticed in this plot
+
+### members vs casual riders difference depending on total rides taken
+```{r visualize user type by total rides}
+plot5 <- all_trips_v2 %>%
+    group_by(usertype) %>% 
+    summarise(ride_count = length(ride_length), ride_percentage = (length(ride_length) / nrow(all_trips_v2)) * 100)
+  ggplot(plot5, aes(x = usertype, fill=usertype)) +
+    geom_bar() + 
+    labs(x="Casuals vs Members", y = "Number Of Rides", title = "Cyclistic ride: Casuals vs Members distribution")
+```
+  
+### Let's visualize rides per week day and user type
+
+```{r visualize rides per week and user type}
+ggplot(all_trips_v2) +
+  geom_bar(mapping = aes(x = day_of_week)) +
+  facet_wrap(~usertype) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(title = "Cyclistic ride: Number of rides per weekday",
+       subtitle = "Distributed by casual users & annual members",
+      x = "Weekday",
+      y = "Number of rides")
+```
+
+### Visualization of rides per weekday and user type with type of bike distribution
+
+```{r visualize rides per weekday, user type and bike type}
+ggplot(all_trips_v2) +
+  geom_bar(mapping = aes(x = day_of_week, fill = usertype)) +
+  facet_wrap(~usertype) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(title = "Cyclistic ride: Number of rides per weekday and type of bike",
+       subtitle = "Distributed by casual users & annual members",
+      x ="Weekday",
+      y = "Number of rides",
+      fill = "Type of bike")
+```
+
+# Conclusions and recommendations
+In other to answer the initial question *How do annual members and casual riders use Cyclistic bikes differently?* We go back to our initial hypothesis: **Casual riders uses Cyclistic bikes more for leisure purposes**, which turned out to be right. The following list how casual riders differ from member riders;
+
+* Casual riders have more ride length than member riders. The average ride length for members are consistent throughout the week with slight increment at weekends
+
+* Member riders have preference for classic bike followed by electric bike
+
+* Member riders have bigger volume of trip data except on weekends where casual riders have more record
+
+From the deep analysis done on the trip data, the following insights can be derived;
+
+* In total, casual members rode less throughout the year
+
+* Casual members tend to ride more frequently on weekends compared to member riders which tend to have consistent rides throughout the week
+
+* On the average, casual members have longer rides when compared to member riders
+
+* In all months, we have more member riders than casual riders
+
+### My top 3 recommendations based on my analysis
+* Create a campaign to offer weekend-only membership with different options than the full annual subscription
+
+* Rebates along with different subscription plans could be offered to casual riders for th usage of electric bikes. From a financial angle, it is worth considering increasing the number of electric bikes while reducing the classic bikes, this could be beneficial to the company as electric bikes numbers are good according to the data.
+
+* Create a marketing campaign targeting weekends and peak periods of the year outlining the benefits of annual memberships. They can be sent through emails or advertisements at docking stations.
+
+
+# STEP 5: EXPORT SUMMARY FILE FOR FURTHER ANALYSIS 
+```{r export summary file}
+ counts <- aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype
+                      + all_trips_v2$day_of_week, FUN = mean)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
